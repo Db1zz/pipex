@@ -6,7 +6,7 @@
 /*   By: gonische <gonische@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 13:53:52 by gonische          #+#    #+#             */
-/*   Updated: 2024/08/28 18:37:13 by gonische         ###   ########.fr       */
+/*   Updated: 2024/08/28 20:09:10 by gonische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,24 +43,22 @@ int	main(int argc, char **argv)
 	char	**cmd[2];
 	char	*exe[2];
 
-	if (argc == 5)
-	{
-		parse_args(argv, cmd, exe);
-		pipe(pipefd);
-		pid[0] = fork();
-		if (pid[0] == 0)
-			child_in(pipefd, argv[1], cmd[0], exe[0]);
-		else
-		{
-			pid[1] = fork();
-			if (pid[1] == 0)
-				child_out(pipefd, argv[4], cmd[1], exe[1]);
-			close_pipe(pipefd);
-			waitpid(pid[0], NULL, 0);
-			waitpid(pid[1], NULL, 0);
-			clean_allocated_stuff(cmd, exe);
-		}
-	}
+	check_arg_error(argc, argv);
+	parse_args(argv, cmd, exe);
+	pipe(pipefd);
+	pid[0] = fork();
+	check_err_fd_pid(pid[0], "fork0");
+	if (pid[0] == 0)
+		child_in(pipefd, argv[1], cmd[0], exe[0]);
 	else
-		ft_printf("Invalid amount of arguments\n");
+	{
+		pid[1] = fork();
+		check_err_fd_pid(pid[1], "fork1");
+		if (pid[1] == 0)
+			child_out(pipefd, argv[4], cmd[1], exe[1]);
+		close_pipe(pipefd);
+		waitpid(pid[0], NULL, 0);
+		waitpid(pid[1], NULL, 0);
+		clean_allocated_stuff(cmd, exe);
+	}
 }
