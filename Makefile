@@ -8,6 +8,8 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
 SRCS =  $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)
+LIBFT_DIR = ./libft
+LIBFT = $(LIBFT_DIR)/libft.a
 PRINTF_DIR = ./ft_printf
 PRINTF = $(PRINTF_DIR)/libftprintf.a
 
@@ -24,16 +26,14 @@ $(NAME): $(SRCS)
 
 clean:
 	rm -f $(OBJS) $(TEST_OBJS)
+	$(MAKE) -C $(LIBFT_DIR) clean
+	$(MAKE) -C $(PRINTF_DIR) clean
 
 fclean: clean
 	rm -f $(NAME) $(TEST_NAME)
+	$(MAKE) -C $(LIBFT_DIR) fclean
+	$(MAKE) -C $(PRINTF_DIR) fclean
 
 re: fclean all
-
-test: fclean $(PRINTF) 
-	@mkdir -p temp_printf_objs
-	@cd temp_printf_objs && ar x ../$(PRINTF)
-	$(TEST_CC) $(TEST_CFLAGS) $(PRINTF) $(TEST_SRCS) -o $(TEST_NAME)
-	@rm -rf temp_printf_objs
 
 .PHONY: all clean fclean re

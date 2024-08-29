@@ -6,7 +6,7 @@
 /*   By: gonische <gonische@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 13:53:52 by gonische          #+#    #+#             */
-/*   Updated: 2024/08/28 20:09:10 by gonische         ###   ########.fr       */
+/*   Updated: 2024/08/29 16:31:04 by gonische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,5 @@ int	main(int argc, char **argv)
 		waitpid(pid[1], NULL, 0);
 		clean_allocated_stuff(cmd, exe);
 	}
+	return (0);
 }
