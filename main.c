@@ -6,60 +6,52 @@
 /*   By: gonische <gonische@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 13:53:52 by gonische          #+#    #+#             */
-/*   Updated: 2024/08/29 16:31:04 by gonische         ###   ########.fr       */
+/*   Updated: 2024/08/30 02:50:53 by gonische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	child_in(int pipefd[2], char *filepath, char **cmd, char *exe)
+void	child_in(char *filepath, t_args *args)
 {
-	open_file_as_stdin(filepath);
-	dup2(pipefd[1], STDOUT_FILENO);
-	close_pipe(pipefd);
-	if (execve(exe, cmd, NULL) < 0)
+	args->pid[0] = fork();
+	if (check_err_fd_pid(args->pid[0], ERR_FORK_IN) == 0)
 	{
-		perror(exe);
-		exit(EXIT_FAILURE);
+		open_file_as_stdin(filepath);
+		if (dup2(args->pipefd[1], STDOUT_FILENO) < 0)
+			fatal_error(ERR_DUP2_FAILED);
+		close_pipe(args->pipefd);
+		execve(args->exe[0], args->cmd[0], args->env);
+		perror(args->exe[0]);
 	}
 }
 
-void	child_out(int pipefd[2], char *filepath, char **cmd, char *exe)
+void	child_out(char *filepath, t_args *args)
 {
-	open_file_as_stdout(filepath);
-	dup2(pipefd[0], STDIN_FILENO);
-	close_pipe(pipefd);
-	if (execve(exe, cmd, NULL) < 0)
+	args->pid[1] = fork();
+	if (check_err_fd_pid(args->pid[1], ERR_FORK_OUT) == 0)
 	{
-		perror(exe);
-		exit(EXIT_FAILURE);
+		open_file_as_stdout(filepath);
+		if (dup2(args->pipefd[0], STDIN_FILENO) < 0)
+			fatal_error(ERR_DUP2_FAILED);
+		close_pipe(args->pipefd);
+		execve(args->exe[1], args->cmd[1], args->env);
+		perror(args->exe[1]);
 	}
 }
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **envp)
 {
-	pid_t	pid[2];
-	int		pipefd[2];
-	char	**cmd[2];
-	char	*exe[2];
+	t_args	args;
 
 	check_arg_error(argc, argv);
-	parse_args(argv, cmd, exe);
-	pipe(pipefd);
-	pid[0] = fork();
-	check_err_fd_pid(pid[0], "fork0");
-	if (pid[0] == 0)
-		child_in(pipefd, argv[1], cmd[0], exe[0]);
-	else
-	{
-		pid[1] = fork();
-		check_err_fd_pid(pid[1], "fork1");
-		if (pid[1] == 0)
-			child_out(pipefd, argv[4], cmd[1], exe[1]);
-		close_pipe(pipefd);
-		waitpid(pid[0], NULL, 0);
-		waitpid(pid[1], NULL, 0);
-		clean_allocated_stuff(cmd, exe);
-	}
+	parse_args(argv, envp, &args);
+	pipe(args.pipefd);
+	check_err_fd_pid(args.pipefd[1], ERR_OPN_PIPE);
+	child_in(argv[1], &args);
+	child_out(argv[4], &args);
+	clean_allocated_stuff(&args);
+	waitpid(args.pid[0], NULL, 0);
+	waitpid(args.pid[1], NULL, 0);
 	return (0);
 }

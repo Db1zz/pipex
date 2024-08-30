@@ -6,7 +6,7 @@
 /*   By: gonische <gonische@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 15:48:43 by gonische          #+#    #+#             */
-/*   Updated: 2024/08/28 17:23:53 by gonische         ###   ########.fr       */
+/*   Updated: 2024/08/30 00:24:09 by gonische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,6 @@ void	close_pipe(int pipefd[2])
 	close(pipefd[1]);
 }
 
-void	child_delete_trash(int pipefd[2], char **cmd, char *exec)
-{
-	close_pipe(pipefd);
-	free(exec);
-	free_char_matrix(cmd);
-}
-
 void	free_char_matrix(char **matrix)
 {
 	int	i;
@@ -33,4 +26,13 @@ void	free_char_matrix(char **matrix)
 	while (matrix[i])
 		free(matrix[i++]);
 	free(matrix);
+}
+
+void	clean_allocated_stuff(t_args *args)
+{
+	close_pipe(args->pipefd);
+	free_char_matrix(args->cmd[0]);
+	free_char_matrix(args->cmd[1]);
+	free(args->exe[0]);
+	free(args->exe[1]);
 }
