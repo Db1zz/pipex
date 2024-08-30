@@ -6,7 +6,7 @@
 /*   By: gonische <gonische@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 15:48:43 by gonische          #+#    #+#             */
-/*   Updated: 2024/08/30 00:24:09 by gonische         ###   ########.fr       */
+/*   Updated: 2024/08/30 14:48:47 by gonische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,12 @@ void	free_char_matrix(char **matrix)
 
 void	clean_allocated_stuff(t_args *args)
 {
-	close_pipe(args->pipefd);
-	free_char_matrix(args->cmd[0]);
-	free_char_matrix(args->cmd[1]);
-	free(args->exe[0]);
-	free(args->exe[1]);
+	if (args->cmd[0])
+		free_char_matrix(args->cmd[0]);
+	if (args->cmd[1])
+		free_char_matrix(args->cmd[1]);
+	if (args->exe[0])
+		free(args->exe[0]);
+	if (args->exe[1])
+		free(args->exe[1]);
 }

@@ -6,7 +6,7 @@
 /*   By: gonische <gonische@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 13:36:13 by gonische          #+#    #+#             */
-/*   Updated: 2024/08/30 13:37:42 by gonische         ###   ########.fr       */
+/*   Updated: 2024/08/30 14:49:45 by gonische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define ERR_ARGS_AMOUNT "Invalid amount of arguments: "
 # define ERR_NULL_ARGS "One or more arguments are NULL"
 # define ERR_DUP2_FAILED "Failed to open new FD with dup2()"
+# define ERR_INCORRECT_CMD "Command not found"
 
 # define CMD_DELIMETER 127
 

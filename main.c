@@ -6,7 +6,7 @@
 /*   By: gonische <gonische@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 13:53:52 by gonische          #+#    #+#             */
-/*   Updated: 2024/08/30 13:37:59 by gonische         ###   ########.fr       */
+/*   Updated: 2024/08/30 14:51:39 by gonische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	main(int argc, char **argv, char **envp)
 	check_err_fd_pid(args.pipefd[1], ERR_OPN_PIPE, &args);
 	child_in(argv[1], &args);
 	child_out(argv[4], &args);
+	close_pipe(args.pipefd);
 	clean_allocated_stuff(&args);
 	waitpid(args.pid[0], NULL, 0);
 	waitpid(args.pid[1], NULL, 0);

@@ -6,7 +6,7 @@
 /*   By: gonische <gonische@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 13:56:08 by gonische          #+#    #+#             */
-/*   Updated: 2024/08/30 13:23:31 by gonische         ###   ########.fr       */
+/*   Updated: 2024/08/30 14:53:30 by gonische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,21 @@ static bool	is_file_accessible(char *path, char *filename, int flags)
 
 static char	*find_cmd_path(char	**env_paths, char *patched_exec)
 {
+	char	*result;
+
 	if (!env_paths || !patched_exec)
 		fatal_error(ERR_NULL_ARGS);
+	result = NULL;
 	while (*env_paths)
 	{
 		if (is_file_accessible(*env_paths, patched_exec, F_OK | X_OK))
-			return (ft_strjoin(*env_paths, patched_exec));
+		{
+			result = ft_strjoin(*env_paths, patched_exec);
+			break ;
+		}
 		env_paths++;
 	}
-	return (NULL);
+	return (result);
 }
 
 char	*get_cmd_path(const char *exec, char **envp)
@@ -54,7 +60,7 @@ char	*get_cmd_path(const char *exec, char **envp)
 	if (is_file_accessible(DEFAULT_UNIX_EXEC_FOLDER, patched_exec, X_OK))
 	{
 		result = ft_strjoin(DEFAULT_UNIX_EXEC_FOLDER, patched_exec);
-		free(patched_exec); 
+		free(patched_exec);
 		return (result);
 	}
 	while (*envp && ft_strncmp("PATH", *envp, 4) != 0)
@@ -102,4 +108,9 @@ void	parse_args(char **argv, char **envp, t_args *args)
 	args->cmd[1] = ft_split(validate_cmd(argv[3]), CMD_DELIMETER);
 	args->exe[0] = get_cmd_path(args->cmd[0][0], args->env);
 	args->exe[1] = get_cmd_path(args->cmd[1][0], args->env);
+	if (!args->cmd[0] || !args->cmd[1] || !args->exe[0] || !args->exe[1])
+	{
+		clean_allocated_stuff(args);
+		fatal_error(ERR_EMPTY_CMD);
+	}
 }
