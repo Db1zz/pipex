@@ -6,7 +6,7 @@
 /*   By: gonische <gonische@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 15:35:21 by gonische          #+#    #+#             */
-/*   Updated: 2024/08/29 23:59:36 by gonische         ###   ########.fr       */
+/*   Updated: 2024/08/30 13:38:28 by gonische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ void	fatal_error(const char *str)
 	exit(EXIT_FAILURE);
 }
 
-int	check_err_fd_pid(int fd, const char *err_str)
+int	check_err_fd_pid(int fd, const char *err_str, t_args *args)
 {
 	if (fd < 0)
 	{
+		clean_allocated_stuff(args);
 		fatal_error(err_str);
-		exit(EXIT_FAILURE);
 	}
 	return (fd);
 }

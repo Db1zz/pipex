@@ -6,7 +6,7 @@
 /*   By: gonische <gonische@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 13:36:13 by gonische          #+#    #+#             */
-/*   Updated: 2024/08/30 02:51:43 by gonische         ###   ########.fr       */
+/*   Updated: 2024/08/30 13:37:42 by gonische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct t_args
 	char	**env;
 }	t_args;
 
-int		check_err_fd_pid(int fd, const char *err_str);
+int		check_err_fd_pid(int fd, const char *err_str, t_args *args);
 char	*get_cmd_path(const char *exec, char **envp);
 char	*validate_cmd(char *cmd);
 int		check_access(const char *filepath, int acc_mode);

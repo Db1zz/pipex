@@ -6,7 +6,7 @@
 /*   By: gonische <gonische@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 13:53:52 by gonische          #+#    #+#             */
-/*   Updated: 2024/08/30 02:50:53 by gonische         ###   ########.fr       */
+/*   Updated: 2024/08/30 13:37:59 by gonische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	child_in(char *filepath, t_args *args)
 {
 	args->pid[0] = fork();
-	if (check_err_fd_pid(args->pid[0], ERR_FORK_IN) == 0)
+	if (check_err_fd_pid(args->pid[0], ERR_FORK_IN, args) == 0)
 	{
 		open_file_as_stdin(filepath);
 		if (dup2(args->pipefd[1], STDOUT_FILENO) < 0)
@@ -29,7 +29,7 @@ void	child_in(char *filepath, t_args *args)
 void	child_out(char *filepath, t_args *args)
 {
 	args->pid[1] = fork();
-	if (check_err_fd_pid(args->pid[1], ERR_FORK_OUT) == 0)
+	if (check_err_fd_pid(args->pid[1], ERR_FORK_OUT, args) == 0)
 	{
 		open_file_as_stdout(filepath);
 		if (dup2(args->pipefd[0], STDIN_FILENO) < 0)
@@ -47,7 +47,7 @@ int	main(int argc, char **argv, char **envp)
 	check_arg_error(argc, argv);
 	parse_args(argv, envp, &args);
 	pipe(args.pipefd);
-	check_err_fd_pid(args.pipefd[1], ERR_OPN_PIPE);
+	check_err_fd_pid(args.pipefd[1], ERR_OPN_PIPE, &args);
 	child_in(argv[1], &args);
 	child_out(argv[4], &args);
 	clean_allocated_stuff(&args);

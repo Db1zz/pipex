@@ -6,7 +6,7 @@
 /*   By: gonische <gonische@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 13:56:08 by gonische          #+#    #+#             */
-/*   Updated: 2024/08/30 02:51:37 by gonische         ###   ########.fr       */
+/*   Updated: 2024/08/30 13:23:31 by gonische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,11 @@ char	*get_cmd_path(const char *exec, char **envp)
 	if (!patched_exec)
 		fatal_error(ERR_MALLOC);
 	if (is_file_accessible(DEFAULT_UNIX_EXEC_FOLDER, patched_exec, X_OK))
-		return (ft_strjoin(DEFAULT_UNIX_EXEC_FOLDER, patched_exec));
+	{
+		result = ft_strjoin(DEFAULT_UNIX_EXEC_FOLDER, patched_exec);
+		free(patched_exec); 
+		return (result);
+	}
 	while (*envp && ft_strncmp("PATH", *envp, 4) != 0)
 		envp++;
 	env_paths = ft_split(*envp + 5, ':');
