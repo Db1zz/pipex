@@ -6,7 +6,7 @@
 /*   By: gonische <gonische@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 16:54:30 by gonische          #+#    #+#             */
-/*   Updated: 2024/08/29 23:11:32 by gonische         ###   ########.fr       */
+/*   Updated: 2024/08/31 01:40:22 by gonische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ typedef int	(*t_disp_func)(t_format *);
 /*
 	Functions
 */
-void		*ft_calloc(size_t count, size_t size);
 void		ft_set_bit(char *bit_set, char bit);
 bool		ft_check_bit(char bit_set, char bit);
 bool		ft_check_remove_bit(char *bit_set, char bit);

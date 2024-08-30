@@ -6,7 +6,7 @@
 /*   By: gonische <gonische@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 15:48:43 by gonische          #+#    #+#             */
-/*   Updated: 2024/08/30 14:48:47 by gonische         ###   ########.fr       */
+/*   Updated: 2024/08/31 01:48:53 by gonische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	free_char_matrix(char **matrix)
 	free(matrix);
 }
 
-void	clean_allocated_stuff(t_args *args)
+void	doomsday(t_args *args)
 {
 	if (args->cmd[0])
 		free_char_matrix(args->cmd[0]);
@@ -38,4 +38,19 @@ void	clean_allocated_stuff(t_args *args)
 		free(args->exe[0]);
 	if (args->exe[1])
 		free(args->exe[1]);
+	if (args->fd[0] >= 0)
+		close(args->fd[0]);
+	if (args->fd[1] >= 0)
+		close(args->fd[1]);
+	close_pipe(args->pipefd);
+}
+
+int	check_access(const char *filepath, int acc_mode)
+{
+	int	result;
+
+	result = access(filepath, acc_mode);
+	if (result < 0)
+		perror(filepath);
+	return (result);
 }

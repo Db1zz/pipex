@@ -6,7 +6,7 @@
 /*   By: gonische <gonische@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 13:56:08 by gonische          #+#    #+#             */
-/*   Updated: 2024/08/30 17:10:57 by gonische         ###   ########.fr       */
+/*   Updated: 2024/08/31 01:43:58 by gonische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,8 @@ void	parse_args(char **argv, char **envp, t_args *args)
 	args->exe[1] = get_cmd_path(args->cmd[1][0], args->env);
 	if (!args->cmd[0] || !args->cmd[1])
 	{
-		clean_allocated_stuff(args);
+		doomsday(args);
+		free(args);
 		fatal_error(ERR_INCORRECT_CMD);
 	}
 }

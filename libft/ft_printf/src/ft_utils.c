@@ -6,7 +6,7 @@
 /*   By: gonische <gonische@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 16:19:35 by gonische          #+#    #+#             */
-/*   Updated: 2024/07/23 19:48:27 by gonische         ###   ########.fr       */
+/*   Updated: 2024/08/31 01:40:12 by gonische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,17 +72,6 @@ size_t	ft_get_number_size(int64_t number)
 		num /= 10;
 		result++;
 	}
-	return (result);
-}
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*result;
-
-	result = malloc(count * size);
-	if (result == NULL)
-		return (NULL);
-	ft_bzero(result, count * size);
 	return (result);
 }
 

@@ -1,9 +1,8 @@
 # Project settings
 NAME = pipex
 CC = cc
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
-SRCS =	access.c 	\
-		error.c		\
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address -g
+SRCS =	error.c		\
 		main.c		\
 		parser.c	\
 		utils.c		\
