@@ -1,11 +1,7 @@
 # Project settings
 NAME = pipex
 CC = cc
-# Tiny Note:
-# -g flag is used to debug my project, without it debuggers will not
-# get the debug information and I will not be able to debug my project.
-# After finishing the project, just comment out this flag ;)
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
 SRCS =	access.c 	\
 		error.c		\
 		main.c		\
