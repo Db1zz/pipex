@@ -6,7 +6,7 @@
 /*   By: gonische <gonische@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 14:30:25 by gonische          #+#    #+#             */
-/*   Updated: 2024/06/20 19:49:55 by gonische         ###   ########.fr       */
+/*   Updated: 2024/08/29 23:11:26 by gonische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LIBFT_H
 
 # include <stddef.h> // Is used to get size_t
+# include "./ft_printf/include/ft_printf.h"
 
 /* 
 	Libft mandatory functions
