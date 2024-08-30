@@ -6,7 +6,7 @@
 /*   By: gonische <gonische@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 13:30:55 by gonische          #+#    #+#             */
-/*   Updated: 2024/08/28 18:11:51 by gonische         ###   ########.fr       */
+/*   Updated: 2024/08/30 00:21:54 by gonische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	open_file_as_stdin(const char *path)
 		exit(EXIT_FAILURE);
 	if (check_access(path, R_OK) < 0)
 		exit(EXIT_FAILURE);
-	fd = open(path, O_RDONLY);
+	fd = open(path, O_RDONLY, 0644);
 	if (fd < 0)
 	{
 		perror(path);
@@ -40,10 +40,7 @@ void	open_file_as_stdin(const char *path)
 	fd_in = dup2(fd, STDIN_FILENO);
 	close(fd);
 	if (fd_in < 0)
-	{
-		perror("dup2()");
-		exit(EXIT_FAILURE);
-	}
+		fatal_error(ERR_DUP2_FAILED);
 }
 
 void	open_file_as_stdout(const char *path)
@@ -51,7 +48,7 @@ void	open_file_as_stdout(const char *path)
 	int	fd;
 	int	fd_out;
 
-	fd = open(path, O_WRONLY | O_TRUNC | O_CREAT, 0600);
+	fd = open(path, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd < 0)
 	{
 		perror(path);
@@ -60,8 +57,5 @@ void	open_file_as_stdout(const char *path)
 	fd_out = dup2(fd, STDOUT_FILENO);
 	close(fd);
 	if (fd_out < 0)
-	{
-		perror("dup2()");
-		exit(EXIT_FAILURE);
-	}
+		fatal_error(ERR_DUP2_FAILED);
 }
