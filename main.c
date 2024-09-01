@@ -6,7 +6,7 @@
 /*   By: gonische <gonische@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 13:53:52 by gonische          #+#    #+#             */
-/*   Updated: 2024/08/31 01:42:53 by gonische         ###   ########.fr       */
+/*   Updated: 2024/09/01 15:55:03 by gonische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 static bool	check_child_params(char *exe, char **cmd, int fd)
 {
-	if (!exe || !cmd)
+	if (!cmd)
 	{
 		display_error(ERR_INCORRECT_PARAMS);
 		return (false);
 	}
 	if (access(exe, X_OK) < 0)
 	{
-		perror(exe);
+		display_error(ERR_INCORRECT_CMD);
 		return (false);
 	}
 	if (fd < 0)
