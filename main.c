@@ -6,35 +6,30 @@
 /*   By: gonische <gonische@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 13:53:52 by gonische          #+#    #+#             */
-/*   Updated: 2024/09/01 15:55:03 by gonische         ###   ########.fr       */
+/*   Updated: 2024/09/02 12:14:52 by gonische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static bool	check_child_params(char *exe, char **cmd, int fd)
+static bool	check_child_params(char *exe, char **cmd, int fd, char *fn)
 {
-	if (!cmd)
-	{
-		display_error(ERR_INCORRECT_PARAMS);
-		return (false);
-	}
-	if (access(exe, X_OK) < 0)
-	{
-		display_error(ERR_INCORRECT_CMD);
-		return (false);
-	}
 	if (fd < 0)
 	{
-		display_error(ERR_NO_FILE);
+		display_error(ERR_NO_FILE, fn);
+		return (false);
+	}
+	if (!cmd || !exe || access(exe, X_OK) < 0)
+	{
+		display_error(ERR_INCORRECT_CMD, cmd[0]);
 		return (false);
 	}
 	return (true);
 }
 
-void	child_in(t_args *args)
+static void	child_in(t_args *args, char *fn)
 {
-	if (!check_child_params(args->exe[0], args->cmd[0], args->fd[0]))
+	if (!check_child_params(args->exe[0], args->cmd[0], args->fd[0], fn))
 		return ;
 	args->pid[0] = fork();
 	if (check_err_fd_pid(args->pid[0], ERR_FORK_IN, args) == 0)
@@ -52,9 +47,9 @@ void	child_in(t_args *args)
 	}
 }
 
-void	child_out(t_args *args)
+static void	child_out(t_args *args, char *fn)
 {
-	if (!check_child_params(args->exe[1], args->cmd[1], args->fd[1]))
+	if (!check_child_params(args->exe[1], args->cmd[1], args->fd[1], fn))
 		return ;
 	args->pid[1] = fork();
 	if (check_err_fd_pid(args->pid[1], ERR_FORK_OUT, args) == 0)
@@ -83,8 +78,8 @@ int	main(int argc, char **argv, char **envp)
 	check_err_fd_pid(args->pipefd[1], ERR_OPN_PIPE, args);
 	args->fd[0] = open(argv[1], O_RDONLY, 0644);
 	args->fd[1] = open(argv[4], O_WRONLY | O_TRUNC | O_CREAT, 0644);
-	child_in(args);
-	child_out(args);
+	child_in(args, argv[1]);
+	child_out(args, argv[4]);
 	doomsday(args);
 	waitpid(args->pid[0], NULL, 0);
 	waitpid(args->pid[1], NULL, 0);

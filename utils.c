@@ -6,7 +6,7 @@
 /*   By: gonische <gonische@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 15:48:43 by gonische          #+#    #+#             */
-/*   Updated: 2024/08/31 01:48:53 by gonische         ###   ########.fr       */
+/*   Updated: 2024/09/02 11:54:33 by gonische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,20 @@ int	check_access(const char *filepath, int acc_mode)
 	result = access(filepath, acc_mode);
 	if (result < 0)
 		perror(filepath);
+	return (result);
+}
+
+bool	is_file_accessible(char *path, char *filename, int flags)
+{
+	bool	result;
+	char	*complete_path;
+
+	if (!path || !filename)
+		fatal_error(ERR_NULL_ARGS);
+	complete_path = ft_strjoin(path, filename);
+	if (!complete_path)
+		fatal_error(ERR_MALLOC);
+	result = access(complete_path, flags) >= 0;
+	free(complete_path);
 	return (result);
 }
